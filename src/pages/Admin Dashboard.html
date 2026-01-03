@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f9fafb; margin:0; padding:20px; }
+    .card { background:#fff; border:1px solid #ddd; border-radius:8px; padding:16px; margin-bottom:20px; }
+    .stats { display:flex; gap:20px; }
+    .stat { flex:1; text-align:center; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:left; }
+    th { background:#f3f4f6; }
+    button { padding:6px 12px; border:none; border-radius:4px; cursor:pointer; }
+    .delete { background:#fee2e2; color:#b91c1c; }
+  </style>
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+
+  <!-- Stats -->
+  <div class="card stats">
+    <div class="stat">
+      <div>Trips Created</div>
+      <div id="tripCount" style="font-size:24px;font-weight:bold;">0</div>
+    </div>
+    <div class="stat">
+      <div>Users Registered</div>
+      <div id="userCount" style="font-size:24px;font-weight:bold;">0</div>
+    </div>
+    <div class="stat">
+      <div>Avg Destinations/Trip</div>
+      <div id="avgDest" style="font-size:24px;font-weight:bold;">0</div>
+    </div>
+  </div>
+
+  <!-- Top Cities -->
+  <div class="card">
+    <h2>Top Cities</h2>
+    <ul id="topCities"></ul>
+  </div>
+
+  <!-- User Management -->
+  <div class="card">
+    <h2>User Management</h2>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Actions</th></tr>
+      </thead>
+      <tbody id="userTable"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Demo data
+    const trips = [
+      { name:"Europe Explorer", stops:["Paris","Berlin","Prague"] },
+      { name:"Asia Adventure", stops:["Tokyo","Bangkok"] }
+    ];
+    const users = [
+      { name:"Traveler", email:"demo@globe.trot" },
+      { name:"Alice", email:"alice@example.com" },
+      { name:"Bob", email:"bob@example.com" }
+    ];
+    const cities = [
+      { name:"Paris", country:"France", popularity:5 },
+      { name:"Berlin", country:"Germany", popularity:4 },
+      { name:"Tokyo", country:"Japan", popularity:5 }
+    ];
+
+    // Stats
+    document.getElementById("tripCount").textContent = trips.length;
+    document.getElementById("userCount").textContent = users.length;
+    const avgDest = trips.reduce((acc,t)=>acc+t.stops.length,0)/trips.length;
+    document.getElementById("avgDest").textContent = avgDest.toFixed(1);
+
+    // Top cities
+    const topCities = cities.sort((a,b)=>b.popularity-a.popularity).slice(0,3);
+    document.getElementById("topCities").innerHTML = topCities.map(c=>`<li>${c.name} (${c.country}) - Popularity ${c.popularity}</li>`).join("");
+
+    // Users
+    const userTable = document.getElementById("userTable");
+    users.forEach(u=>{
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${u.name}</td><td>${u.email}</td>
+        <td><button class="delete">Delete</button></td>`;
+      userTable.appendChild(row);
+    });
+  </script>
+</body>
+</html>s
